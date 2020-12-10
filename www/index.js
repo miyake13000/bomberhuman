@@ -1,14 +1,6 @@
 import { GameData } from "bomber-human-test";
 
-const debug = false
-
-var num_of_player = window.prompt("プレイヤー数を入力してください．(2，3，4)", "");
-
-if(num_of_player !== 2 || num_of_player !== 3 || num_of_player !== 4){
-    num_of_player = 4;
-}
-
-let gamedata = GameData.new(num_of_player);
+const debug = true
 
 class Key {
     constructor(key1, key2, key3, key4, key5, num) {
@@ -23,7 +15,7 @@ class Key {
         gamedata.toggle_move_up(this.player_num, keys.some(e => e === this.up));
         gamedata.toggle_move_left(this.player_num, keys.some(e => e === this.left));
         gamedata.toggle_move_down(this.player_num, keys.some(e => e === this.down));
-	    gamedata.toggle_move_right(this.player_num, keys.some(e => e === this.right));
+        gamedata.toggle_move_right(this.player_num, keys.some(e => e === this.right));
         gamedata.toggle_put_bomb(this.player_num, keys.some(e => e === this.put_bomb));
     }
     scanCommand(keys){
@@ -53,7 +45,7 @@ class Key {
 
 function pushKey(keys, key, repeat){
     if(!repeat) {
-	keys.push(key);
+        keys.push(key);
     }
 }
 function popKey(keys, key){
@@ -66,10 +58,10 @@ let prevTimestamp = null;
 let drawAndUpdate = (timestamp) => {
     //Initialization
     if (!prevTimestamp) {
-	    start = timestamp;
-	    prevTimestamp = timestamp;
-	    requestAnimationFrame(drawAndUpdate);
-	    return;
+        start = timestamp;
+        prevTimestamp = timestamp;
+        requestAnimationFrame(drawAndUpdate);
+        return;
     }
 
     var i;
@@ -80,23 +72,23 @@ let drawAndUpdate = (timestamp) => {
         key_bind[i].scan(put_keys);
     }
     if(navigator.getGamepads) {
-	    var gamepad_list = navigator.getGamepads();
-	    var num = gamepad_list.length;
-	    for(i = 0; i < num_of_player; i++) {
-	        var gamepad = gamepad_list[i];
-	        if(!gamepad) continue;
-	        console.log(gamepad);
+        var gamepad_list = navigator.getGamepads();
+        var num = gamepad_list.length;
+        for(i = 0; i < num_of_player; i++) {
+            var gamepad = gamepad_list[i];
+            if(!gamepad) continue;
+            console.log(gamepad);
 
-	        var buttons = gamepad.buttons;
-	        var axes = gamepad.axes;
+            var buttons = gamepad.buttons;
+            var axes = gamepad.axes;
 
-	        if(buttons.length <= 12) {
-	            gamedata.toggle_move_up(i, axes[1] < -0.3);
-	            gamedata.toggle_move_down(i, axes[1] > 0.3);
-	            gamedata.toggle_move_left(i, axes[0] < -0.3);
-	            gamedata.toggle_move_right(i, axes[0] > 0.3);
-	            gamedata.toggle_put_bomb(i, buttons[1].pressed);
-	        } else {
+            if(buttons.length <= 12) {
+                gamedata.toggle_move_up(i, axes[1] < -0.3);
+                gamedata.toggle_move_down(i, axes[1] > 0.3);
+                gamedata.toggle_move_left(i, axes[0] < -0.3);
+                gamedata.toggle_move_right(i, axes[0] > 0.3);
+                gamedata.toggle_put_bomb(i, buttons[1].pressed);
+            } else {
                 gamedata.toggle_move_up(i, buttons[12].pressed || axes[1] < -0.3);
                 gamedata.toggle_move_down(i, buttons[13].pressed || axes[1] > 0.3);
                 gamedata.toggle_move_left(i, buttons[14].pressed || axes[0] < -0.3);
